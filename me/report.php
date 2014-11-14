@@ -1,13 +1,13 @@
 <?php
 include 'config.php';
 
-use \Michelf\Markdown;
+use \Michelf\MarkdownExtra;
 $html = '<p>Failed to load file or no file is not selected</p>';
 $file = getFile();
 
 if ($file != "" ) {
     if ((@$text = file_get_contents('reports/' . $file)) !== false) {
-        $html = Markdown::defaultTransform($text);
+        $html = MarkdownExtra::defaultTransform($text);
         $title = ucfirst(explode('.', $file)[0]) . " - Redovisning";
     }
 }
