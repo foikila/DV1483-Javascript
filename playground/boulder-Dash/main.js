@@ -1,115 +1,136 @@
-
-
-window.onload = (function () {
-    'use strict';
-
-    var Map = {};
-
-    var rockford = document.getElementById('baddie1'),
-        area = document.getElementById('flash'),
-        pos = {x:1, y:1},
-        tileSize = 32,
-        gameArea = [],
-        boardSize = 24,
-        annoyingText = false;
-
-    /**
-     * init the map
-     */
-    function init () {
-        var x, y;
-        // init game gameArea
-        for (x = 0; x < boardSize; x++) {
-            gameArea[x] = [];
-            for (y = 0; y < boardSize; y++) {
-                gameArea[x][y] = 0;
-            }
-        }
-    }
+/**
+ * Work with strings.
+ */
+$(document).ready(function(){
+  'use strict';
+  var rockford = document.getElementById('baddie1'),
+    area = document.getElementById('flash'),
+    left = area.offsetLeft,
+    top  = area.offsetTop,
+    posLeft = 0,
+    posTop = 0,
+    tileSize = 32,
+    gridSize = 24,
 
     /**
-     * Add nice gui shit
+     * This is the background for the game area.
      */
-    function createWorld () {
-        var x, y, element;
+    gameArea = [
+      13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,
+      12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,
+      14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,
+      13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,
+      12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,
+      14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,
+      13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,
+      12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,
+      14,12,13,14,12,13,14,16,16,14,12,16,17,12,13,14,12,13,14,12,13,14,12,13,
+      13,14,12,13,14,12,13,14,16,17,14,17,13,15,12,13,14,12,13,14,12,13,14,12,
+      12,13,14,12,13,14,12,13,15,15,13,14,12,16,14,12,13,14,12,13,14,12,13,14,
+      14,12,13,14,12,13,14,12,15,15,17,17,16,12,13,14,12,13,14,12,13,14,12,13,
+      13,14,12,13,14,12,13,14,12,17,17,15,13,14,12,13,14,12,13,14,12,13,14,12,
+      12,13,14,12,13,14,12,13,14,12,13,14,12,17,17,12,13,14,12,13,14,12,13,14,
+      14,12,13,14,12,13,14,16,13,14,12,13,14,17,16,16,16,13,14,12,13,14,19,21,
+      13,14,12,13,14,12,13,14,12,13,14,17,13,14,12,16,16,12,13,19,18,18,21,21,
+      12,13,14,12,13,14,12,13,14,12,13,14,12,13,17,12,13,19,18,21,21,21,21,21,
+      14,12,13,14,12,13,14,12,13,14,12,13,14,15,16,14,12,20,21,21,21,21,21,21,
+      13,14,12,13,14,12,13,14,12,13,14,12,13,15,15,13,19,21,21,21,21,21,21,21,
+      12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,20,21,21,21,21,21,21,21,
+      14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,22,21,21,21,21,21,21,21,
+      13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,22,21,21,21,21,21,21,
+      12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,22,21,21,21,21,21,
+      14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,12,13,14,22,21,21,21,21,
+    ],
 
-        for (x = 0; x < boardSize; x++) {
-            for (y = 0; y < boardSize; y++) {
-                element = document.createElement('div');
-                element.innerHTML = '';
-                element.className = 'title t12';
-                element.id = 'n' + x + "-" + y;
-                area.appendChild(element);
-            }
-        }
+    /**
+     * These are blocks that cant be moved to, or something happens when you try to move on them.
+     * The blocks are drawn "on top" of the gamearea. Block 10 is empty, should be 0 but looks nicer with two figures.
+     */
+    gameBlocks = [
+      19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,13,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,10,10,10,10,10,19,
+      19,10,10,10,10,10,11,10,10,10,10,10,10,10,10,10,13,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,11,10,10,10,10,10,10,10,10,10,13,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,11,11,11,12,11,11,10,10,10,10,13,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,11,11,10,10,10,10,13,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,13,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,13,13,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,13,13,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,12,12,11,11,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,12,12,10,11,13,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,12,14,10,10,13,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,13,10,13,13,13,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,13,13,11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,11,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,19,
+      19,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,18,19,
+      19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,
+    ];
 
-        for (y = 0; y < boardSize; y++) {
-            gameArea[0][y] = 1;
-        }
-        for (x = 0; x < boardSize; x++) {
-            gameArea[x][0] = 1;
-        }
+
+  /**
+   * Draw the initial gameplan
+   */
+  function drawGamePlan(gameArea, gameBlocks) {
+    var i,e,b;
+    for(i = 0; i < gameArea.length; i++) {
+      e = document.createElement('div');
+      e.innerHTML = '';
+      e.className = 'tile t' + gameArea[i] + (gameBlocks[i] ? ' b' + gameBlocks[i] : '');
+      e.id = 'n' + i;
+      area.appendChild(e);
     }
+  };
 
-    document.onkeydown = function (event) {
-        var key;
-        key = event.keyCode || event.which;
-            switch(key) {
-                case 37:
-                    Map.move('left');
-                    break;
-                case 39:
-                    Map.move('right');
-                    break;
-                case 38:
-                    Map.move('up');
-                    break;
-                default:
-                case 40:
-                    Map.move('down');
-                    break;
-            }
+  drawGamePlan(gameArea, gameBlocks);
+
+
+  /**
+   * Move Rockford
+   */
+  var move = function(moveLeft, moveTop, which) {
+
+    function moveIt() {
+      rockford.style.left = (area.offsetLeft + posLeft*tileSize + tileSize/2) + 'px';
+      rockford.style.top  = (area.offsetTop + posTop*tileSize + tileSize/2) + 'px';
     };
 
-    Map.move = function (which) {
-        switch (which) {
-            case 'left':
-                pos.x -= 1;
-                if (gameArea[pos.x][pos.y] == 1) {
-                    pos.x += 1;
-                }
-                break;
-            case 'right':
-                pos.x += 1;
-                if (gameArea[pos.x][pos.y] == 1) {
-                    pos.x -= 1;
-                }
-                break;
-            case 'up':
-                pos.y -= 1;
-                if (gameArea[pos.x][pos.y] == 1) {
-                    pos.x += 1;
-                }
-                break;
-            case 'down':
-                pos.y += 1;
-                if (gameArea[pos.x][pos.y] == 1) {
-                    pos.x -= 1;
-                }
-                break;
-        }
-        rockford.style.left =
-                (area.offsetLeft + pos.x*tileSize + tileSize/2) + 'px';
-            rockford.style.top  =
-                (area.offsetTop + pos.y*tileSize + tileSize/2) + 'px';
-        rockford.className='baddie ' + which;
-        if (annoyingText)
-            console.log('Moved ' + which + '!');
-        return '';
+    if(which) { rockford.className='baddie ' + which; }
+
+    if(!(gameBlocks[(posLeft+moveLeft)+(posTop+moveTop)*gridSize]-10)) {
+      posLeft += moveLeft;
+      posTop  += moveTop;
+      moveIt();
+    } else {
+      console.log('Block detected, cant move.');
+    }
+  };
+  console.log('Moving Mickey Mos (Rockford) to initial spot.');
+  move(1, 1, 'down');
+
+
+  /**
+   * Keep track on keys pressed and move Rockford accordingly.
+   */
+  document.onkeydown = function(event) {
+    var key;
+    event.preventDefault();
+    key = event.keyCode || event.which;
+    switch(key) {
+      case 37: move(-1, 0, 'left'); break;
+      case 39: move(1, 0, 'right'); break;
+      case 38: move(0, -1, 'up'); break;
+      case 40: move(0, 1, 'down'); break;
+      default: move(0, 0, 'down'); break;
     };
+    // console.log('Keypress: ' + event + ' key: ' + key + ' new pos: ' + rockford.offsetLeft + ', ' + rockford.offsetTop);
+  };
 
-    init();
-    createWorld();
-    return Map;
-
-})(window, document);
+    console.log('Everything is ready.');
+});
