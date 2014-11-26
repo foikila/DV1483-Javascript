@@ -71,6 +71,15 @@
             </div>
         </div>
     </div>
+
+    <h1>Uppgift 8</h1>
+    <div id='box8'>
+        <div class="slideshow">
+            <img data-src='//www.student.bth.se/~jokd13/javascript/playground/jQuery/img/Donald-Duck-30.jpg' alt="1">
+            <img data-src='//www.student.bth.se/~jokd13/javascript/playground/jQuery/img/Micky-mouse.jpg' alt="2">
+            <img data-src='//www.student.bth.se/~jokd13/javascript/playground/jQuery/img/goofy.jpg' alt="3">
+        </div>
+    </div>
 </main>
 
 <?php

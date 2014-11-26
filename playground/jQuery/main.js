@@ -126,4 +126,41 @@ $(document).ready( function () {
     // Start gallery
     galleryInit();
 
+    var slideshowInit = function() {
+        var nrOfImages = $('.slideshow img').length,
+            currentImage = nrOfImages - 1,
+            zIndex = parseInt($('.slideshow').css('z-index')),
+            currentZIndex = zIndex,
+            intervalId = null;
+
+        var rotateImages = function() {
+            $('.slideshow img')
+                .eq(currentImage)
+                .fadeOut('slow', function() {
+                    $(this)
+                        .css('z-index', zIndex)
+                        .fadeIn(0)
+                        $(this)
+                            .css('z-index', zIndex)
+                            .fadeIn(0)
+                            .siblings().each(function() {
+                                $(this).css('z-index', ((parseInt($(this).css('z-index')) - zIndex + 1) % nrOfImages + zIndex));
+                            });
+                });
+
+            currentImage = (nrOfImages + currentImage - 1) % nrOfImages;
+            console.log("rotating pictures in slideshow. " + currentImage);
+        };
+
+
+        $('.slideshow img').each(function() {
+            $(this)
+                .attr('src', $(this).attr('data-src'))
+                .css('z-index', currentZIndex++);
+        })
+        .click(rotateImages);
+
+        intervalId = setInterval(function() { rotateImages(); }, 2000);
+    };
+    slideshowInit();
 });

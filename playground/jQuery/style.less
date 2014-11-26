@@ -1,11 +1,14 @@
 @import "../template/base.less";
 
+body {
+    max-width: 940px;
+    margin: 8px auto;
+}
 main {
     text-align: center;
 }
 .kalle {
     width:300px;
-
 }
 .invert {
     color:#0ff;
@@ -66,10 +69,22 @@ main {
 .gallery-all img.selected {
     border-color: #eee;
 }
-.carousel {
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    width: 800px;
-    height: 200px;
+@slideshow-width: 300px;
+@slideshow-height: 300px;
+@slideshow-z-index: 10;
+
+.slideshow {
+    margin: 0 auto;
+    width: @slideshow-width;
+    height: @slideshow-height;
+
+    position: relative;
+    z-index: @slideshow-z-index;
+    img {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        width: @slideshow-width;
+        height: @slideshow-height;
+    }
 }

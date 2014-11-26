@@ -2,7 +2,7 @@
 Usage
 -----
 
-Contact form is a jQuery-plugin, so first of include jQuery
+ContactForm is a jQuery-plugin, so first of include jQuery
 ```
 <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
 <script src='contactForm.js'></script>
@@ -13,13 +13,13 @@ Then we need to add the nice style to the html-document
 <link rel="stylesheet" type="text/css" href="style.css">
 ```
 
-Then create your form. Notice the notice the **id**: _#contact_. That
+Then create your form. Notice the notice the id _#contact_. That
 is the id that you need to specify on the link, _or button_, that 
 shall trigger the ContactForm. 
 
 ```
 <div id="contact" class="contact-form">
-    <span data-close="#" class=close>X</span>
+    <span data-close class=close>X</span>
     <form action="#">
         <ul>
             <li>
@@ -45,7 +45,7 @@ shall trigger the ContactForm.
 
 Then you need to create the links, _or buttons_, that shall call the ContactForm.
 Notice the `data-toggle`. It's crucial that the value if `data-toggle` is the same
-as the **id** specified for the form. In our case the id is _#contact_.
+as the **id specified** in the form. In our case the id is _#contact_.
 ```
 <button data-toggle="#contact">Contact me button</button>
 <a href="#" data-toggle="#contact">Contact me link</a>
@@ -76,6 +76,6 @@ $(document).ready(function() {
 });
 ```
 [Demo](../playground/ContactForm/)   
-[JS](../playground/ContactForm/main.js)   
+[JS](../playground/ContactForm/ContactForm.js)   
 [CSS](../playground/ContactForm/style.less)   
 

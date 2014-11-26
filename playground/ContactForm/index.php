@@ -79,3 +79,4 @@
 $path = __DIR__;
 include(__DIR__ . '/../template/footer.php');
 ?>
+<script type="text/javascript" src="ContactForm.js"></script>
