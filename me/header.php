@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="sv" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="sv" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="sv" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="sv" class="no-js"> <!--<![endif]-->
+<html lang="sv" class="no-js">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/markdown.css">
         <script type="text/javascript" src="../google.js"></script>
+        <style><? if (isset($style)) { echo $style; } ?></style>
     </head>
     <body>
     <main>
